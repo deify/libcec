@@ -40,7 +40,7 @@
 
 namespace CEC
 {
-  #define COMMAND_HANDLED 0xFF
+#define COMMAND_HANDLED 0xFF
 
   class CCECProcessor;
   class CCECBusDevice;
@@ -55,12 +55,12 @@ namespace CEC
                        int32_t iTransmitWait = CEC_DEFAULT_TRANSMIT_WAIT,
                        int8_t iTransmitRetries = CEC_DEFAULT_TRANSMIT_RETRIES,
                        int64_t iActiveSourcePending = 0);
-    virtual ~CCECCommandHandler(void) {};
+    virtual ~CCECCommandHandler(void){};
 
     virtual bool HandleCommand(const cec_command &command);
     virtual cec_vendor_id GetVendorId(void) { return m_vendorId; };
     virtual void SetVendorId(cec_vendor_id vendorId) { m_vendorId = vendorId; }
-    static bool HasSpecificHandler(cec_vendor_id vendorId) { return vendorId == CEC_VENDOR_LG || vendorId == CEC_VENDOR_SAMSUNG || vendorId == CEC_VENDOR_PANASONIC || vendorId == CEC_VENDOR_PHILIPS || vendorId == CEC_VENDOR_SHARP || vendorId == CEC_VENDOR_SHARP2 || vendorId == CEC_VENDOR_TOSHIBA || vendorId == CEC_VENDOR_TOSHIBA2 || vendorId == CEC_VENDOR_ONKYO;}
+    static bool HasSpecificHandler(cec_vendor_id vendorId) { return vendorId == CEC_VENDOR_LG || vendorId == CEC_VENDOR_SAMSUNG || vendorId == CEC_VENDOR_PANASONIC || vendorId == CEC_VENDOR_PHILIPS || vendorId == CEC_VENDOR_SHARP || vendorId == CEC_VENDOR_SHARP2 || vendorId == CEC_VENDOR_TOSHIBA || vendorId == CEC_VENDOR_TOSHIBA2 || vendorId == CEC_VENDOR_ONKYO; }
 
     virtual bool InitHandler(void) { return true; }
     virtual bool ActivateSource(bool bTransmitDelayedCommandsOnly = false);
@@ -105,6 +105,9 @@ namespace CEC
     virtual bool ActiveSourcePending(void) const { return m_iActiveSourcePending != 0; }
 
   protected:
+    virtual int HandleRequestArcStart(const cec_command &command);
+    virtual int HandleRequestArcEnd(const cec_command &command);
+    virtual int HandleRequestShortAudioDescriptor(const cec_command &command);
     virtual int HandleActiveSource(const cec_command &command);
     virtual int HandleDeckControl(const cec_command &command);
     virtual int HandleDeviceCecVersion(const cec_command &command);
@@ -140,12 +143,12 @@ namespace CEC
     virtual int HandleUserControlPressed(const cec_command &command);
     virtual int HandleUserControlRelease(const cec_command &command);
     virtual int HandleVendorCommand(const cec_command &command);
-    virtual int HandleVendorRemoteButtonDown(const cec_command& command);
-    virtual int HandleVendorRemoteButtonUp(const cec_command& command) { return HandleUserControlRelease(command); }
+    virtual int HandleVendorRemoteButtonDown(const cec_command &command);
+    virtual int HandleVendorRemoteButtonUp(const cec_command &command) { return HandleUserControlRelease(command); }
     virtual void UnhandledCommand(const cec_command &command, const cec_abort_reason reason);
-    virtual void RequestEmailFromCustomer(const cec_command& command);
+    virtual void RequestEmailFromCustomer(const cec_command &command);
 
-    virtual void VendorPreActivateSourceHook(void) {};
+    virtual void VendorPreActivateSourceHook(void){};
 
     virtual size_t GetMyDevices(std::vector<CCECBusDevice *> &devices) const;
     virtual CCECBusDevice *GetDevice(cec_logical_address iLogicalAddress) const;
@@ -158,17 +161,17 @@ namespace CEC
 
     virtual bool SourceSwitchAllowed(void) { return true; }
 
-    CCECBusDevice *    m_busDevice;
-    CCECProcessor *    m_processor;
-    int32_t            m_iTransmitTimeout;
-    int32_t            m_iTransmitWait;
-    int8_t             m_iTransmitRetries;
-    bool               m_bHandlerInited;
-    bool               m_bOPTSendDeckStatusUpdateOnActiveSource;
-    cec_vendor_id      m_vendorId;
-    int64_t            m_iActiveSourcePending;
+    CCECBusDevice *m_busDevice;
+    CCECProcessor *m_processor;
+    int32_t m_iTransmitTimeout;
+    int32_t m_iTransmitWait;
+    int8_t m_iTransmitRetries;
+    bool m_bHandlerInited;
+    bool m_bOPTSendDeckStatusUpdateOnActiveSource;
+    cec_vendor_id m_vendorId;
+    int64_t m_iActiveSourcePending;
     P8PLATFORM::CMutex m_mutex;
-    int64_t            m_iPowerStatusRequested;
-    std::map<cec_opcode, std::vector<cec_command> > m_logsRequested;
+    int64_t m_iPowerStatusRequested;
+    std::map<cec_opcode, std::vector<cec_command>> m_logsRequested;
   };
 };

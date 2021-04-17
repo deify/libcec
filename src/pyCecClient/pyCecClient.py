@@ -39,13 +39,13 @@ class pyCecClient:
   cecconfig = cec.libcec_configuration()
   lib = {}
   # don't enable debug logging by default
-  log_level = cec.CEC_LOG_TRAFFIC
+  log_level = cec.CEC_LOG_DEBUG
 
   # create a new libcec_configuration
   def SetConfiguration(self):
     self.cecconfig.strDeviceName   = "pyLibCec"
     self.cecconfig.bActivateSource = 0
-    self.cecconfig.deviceTypes.Add(cec.CEC_DEVICE_TYPE_RECORDING_DEVICE)
+    self.cecconfig.deviceTypes.Add(cec.CEC_DEVICE_TYPE_AUDIO_SYSTEM)
     self.cecconfig.clientVersion = cec.LIBCEC_VERSION_CURRENT
 
   def SetLogCallback(self, callback):
